@@ -19,7 +19,7 @@ NEWSPIDER_MODULE = 'ArticleSpider.spiders'
 #USER_AGENT = 'ArticleSpider (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False # 默认为TRUE，会去读取每一个网站的robots协议
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
