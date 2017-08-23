@@ -5,6 +5,7 @@ from scrapy.cmdline import execute
 import sys
 import os
 print(os.path.dirname(os.path.abspath(__file__)))
+#需要设置爬虫工程目录，运行main.py时，execute才会生效
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 execute(['scrapy','crawl','jobbole']) # 相当于在cmd 执行 scrapy crawl jobbole

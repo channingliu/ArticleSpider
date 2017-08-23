@@ -11,4 +11,7 @@ class JobboleSpider(scrapy.Spider):
     def parse(self, response):
         title = response.xpath('//*[@id="post-112239"]/div[1]/h1/text()').extract()[0]
         create_time = response.xpath('// *[@id="post-112239"]/div[2]/p/text()[1]').extract()[0].strip().replace('·','').strip()
+        # 使用extract_first()避免extract()[0]列表为空时报错
+        praise_nums = response.xpath('//*[@id="112239votetotal"]/text()').extract_first()
+        tag = response.xpath('//*[@id="post-112239"]/div[2]/p/a[3]/text()').extract()[0]
         pass
