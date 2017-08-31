@@ -12,3 +12,19 @@ class ArticlespiderItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     pass
+
+
+class JobBoleArticleItem(scrapy.Item):
+    # scrapy 字段类型只有scrapy.Field(),与Django有差异
+    title = scrapy.Field()
+    create_time = scrapy.Field()
+    url = scrapy.Field()
+    url_object_id = scrapy.Field()  # url是变长的，这里把它搞成定长的了
+    front_image_url = scrapy.Field()
+    front_image_path = scrapy.Field()
+    praise_nums = scrapy.Field()
+    comment_nums = scrapy.Field()
+    fav_nums = scrapy.Field()
+    tags = scrapy.Field()
+    # content = scrapy.Field()
+

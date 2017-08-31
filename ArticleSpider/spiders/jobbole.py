@@ -4,6 +4,7 @@ import re
 from scrapy.http import Request
 # 在py2.7中 用法：import urlparse
 from urllib import parse
+from ArticleSpider.items import JobBoleArticleItem
 
 
 class JobboleSpider(scrapy.Spider):
@@ -38,6 +39,8 @@ class JobboleSpider(scrapy.Spider):
 
     # parse的回调函数，提取文章的目标内容
     def parse_detail(self, response):
+        # 实例化 itemes
+        article_item = JobBoleArticleItem()
         front_image_url = response.meta.get("front_image_url", "")  # 文章封面图
         title = response.xpath('//div[@class="entry-header"]/h1/text()').extract_first()
         create_time = response.xpath('//p[@class="entry-meta-hide-on-mobile"]/text()[1]').extract()[0].strip().replace('·', '').strip()
@@ -50,12 +53,28 @@ class JobboleSpider(scrapy.Spider):
         else:
             fav_nums = 0
         # 评论
-        comments_nums = response.css('a[href="#article-comment"] span::text').extract()[0]
-        match_re1 = re.match(r".*?(\d+).*", comments_nums)
+        comment_nums = response.css('a[href="#article-comment"] span::text').extract()[0]
+        match_re1 = re.match(r".*?(\d+).*", comment_nums)
         if match_re1:
-            comments_nums = match_re1.group(1)
+            comment_nums = match_re1.group(1)
         else:
-            comments_nums = 0
+            comment_nums = 0
 
         tag = response.css('.breadcrumb-wrapper .category::text').extract()[0]
+
+        article_item["title"] = title
+        article_item["url"] = response.url
+        article_item["create_time"] = create_time
+        article_item["front_image_url"] = [front_image_url]
+        article_item["praise_nums"] = praise_nums
+        article_item["comment_nums"] = comment_nums
+        article_item["fav_nums"] = fav_nums
+        article_item["tags"] = tag
+
+        yield article_item  # 这里的article_item 会传送到pipelines.py中
+
+
+
+
+
         pass

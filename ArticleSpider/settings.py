@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 # Scrapy settings for ArticleSpider project
 #
 # For simplicity, this file contains only settings considered important or
@@ -19,7 +20,7 @@ NEWSPIDER_MODULE = 'ArticleSpider.spiders'
 #USER_AGENT = 'ArticleSpider (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = False # 默认为TRUE，会去读取每一个网站的robots协议
+ROBOTSTXT_OBEY = False  # 默认为TRUE，会去读取每一个网站的robots协议
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -64,10 +65,14 @@ ROBOTSTXT_OBEY = False # 默认为TRUE，会去读取每一个网站的robots协
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'ArticleSpider.pipelines.ArticlespiderPipeline': 300,
-#}
-
+ITEM_PIPELINES = {
+    'ArticleSpider.pipelines.ArticlespiderPipeline': 300,
+    'scrapy.pipelines.images.ImagesPipeline': 1,  # 下载 图片，这里数字越小，进入管道的优先级越高
+}
+# 下载图片的在items中对应的字段, 这里IMAGES_URLS_FIELD的值是一个数组，所以在jobbole.py中article_item["front_image_url"]需要定义为数组
+IMAGES_URLS_FIELD = "front_image_url"
+project_dir = os.path.abspath(os.path.dirname(__file__))
+IMAGES_STORE = os.path.join(project_dir, 'images')
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
 #AUTOTHROTTLE_ENABLED = True
